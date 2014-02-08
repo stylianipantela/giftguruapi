@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, jsonify, abort, make_response
 from amazon import run_test
-from db_model import get_users
+# from db_model import get_users
 
 app = Flask(__name__)
 
@@ -20,9 +20,9 @@ def get_product(keyword):
 
 
 
-@app.route('/users', methods = ['GET'])
-def get_users():
-    return jsonify( { 'results': get_users() })
+# @app.route('/users', methods = ['GET'])
+# def get_users():
+#     return jsonify( { 'results': get_users() })
 
 
 
