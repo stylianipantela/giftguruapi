@@ -1,5 +1,5 @@
 from amazonproduct import API
-api = API(locale='us')
+api = API(locale='us', cfg='amazon-product-api.cfg')
 
 """
 run_test
