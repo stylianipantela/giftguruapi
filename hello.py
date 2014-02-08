@@ -16,7 +16,7 @@ def get_product(keyword):
     keyword = filter(lambda t: t['keyword'] == keyword, products)
     if not keyword:
         abort(404)
-    return jsonify( { 'results': run_test('Toys', keyword, 'Images, ItemAttributes, OfferSummary') } )
+    return jsonify( { 'results': run_test('All', keyword, 'Images, ItemAttributes, OfferSummary') } )
 
 
 
