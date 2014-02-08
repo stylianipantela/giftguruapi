@@ -10,12 +10,13 @@ app = Flask(__name__)
 def get_products():
 	return make_response(jsonify( { 'error': "Specify input" } ), 200)
 
-@app.route('/products/<string:keyword>', methods = ['GET'])
-def get_product(keyword):
-	if not keyword:
+@app.route('/products/<string:keyword>/<string:callback>', methods = ['GET'])
+def get_product(keyword, callback ):
+	if (not keyword) or (not callback):
 		abort(404)
 	results = run_test('All', keyword, 'Images, ItemAttributes, OfferSummary')
-	return make_response(jsonify( { 'results': results } ), 200)
+	results = jsonify( { 'results': results } )
+	return make_response(callback + '(' + results + ');', 200)
 
 
 # @app.route('/users', methods = ['GET'])
