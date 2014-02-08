@@ -28,7 +28,7 @@ def run_test(group, keywords, responseGroup):
     
         if (not (hasattr(item, 'DetailPageURL'))) or (not (hasattr(item, 'ItemAttributes'))) or \
            (not (hasattr(item.ItemAttributes, 'Title'))) or (not (hasattr(item, 'LargeImage'))) or \
-           (not (hasattr(item.SmallImage, 'URL'))) or (not (hasattr(item, 'OfferSummary'))) or \
+           (not (hasattr(item.LargeImage, 'URL'))) or (not (hasattr(item, 'OfferSummary'))) or \
            (not (hasattr(item.OfferSummary, 'LowestNewPrice'))) or \
            (not (hasattr(item.OfferSummary.LowestNewPrice, 'FormattedPrice'))):
             continue    
