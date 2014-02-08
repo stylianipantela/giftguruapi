@@ -36,6 +36,6 @@ def run_test(group, keywords, responseGroup):
         results.append({
         		'title' : str(item.ItemAttributes.Title),
                 'pageUrl': str(item.DetailPageURL),
-                'imgUrl': str(item.SmallImage.URL),
+                'imgUrl': str(item.LargeImage.URL),
                 'price': str(item.OfferSummary.LowestNewPrice.FormattedPrice)})
     return results
