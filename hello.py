@@ -3,7 +3,7 @@ import os
 import json
 from flask import Flask, jsonify, abort, make_response
 
-from amazon import run_test
+from amazon import run_test, top3
 import db_model as db
 
 app = Flask(__name__)
@@ -58,6 +58,19 @@ def set_answer(user_id, question_id, answer_text, callback):
 	return result
 
 
+@app.route('/get_recs/<string:user_id>/<string:callback>', methods = ['GET'])
+def get_recs(user_id, callback):
+	if (not callback):
+		abort(404)
+	answers = db.get_answers(user_id)
+	answers = answers['results']
+	recs = []
+	for answer in answers:
+		rec = top3('All', answer['question_text'], 'Images, ItemAttributes, OfferSummary')
+		recs.append({'question_text': answer['question_text'], 'recs': rec['results']})
+	result = json.dumps( {'results': recs, 'status': 0} )
+	result = callback + '(' + result + ');'
+	return result
 
 # @app.route('/users', methods = ['GET'])
 # def get_users():

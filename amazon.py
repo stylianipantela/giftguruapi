@@ -46,3 +46,31 @@ def run_test(group, keywords, responseGroup):
 
     return results
 
+def top3(group, keywords, responseGroup):
+    results = []
+    counter = 0
+    try:
+        items = api.item_search(group, Keywords= keywords, ResponseGroup=responseGroup)
+        for item in items:     
+            if (counter == 3):
+                break
+            counter = counter + 1
+        
+            if (not (hasattr(item, 'DetailPageURL'))) or (not (hasattr(item, 'ItemAttributes'))) or \
+               (not (hasattr(item.ItemAttributes, 'Title'))) or (not (hasattr(item, 'LargeImage'))) or \
+               (not (hasattr(item.LargeImage, 'URL'))) or (not (hasattr(item, 'OfferSummary'))) or \
+               (not (hasattr(item.OfferSummary, 'LowestNewPrice'))) or \
+               (not (hasattr(item.OfferSummary.LowestNewPrice, 'FormattedPrice'))):
+                continue    
+                
+            results.append({
+                    'title' : str(item.ItemAttributes.Title),
+                    'pageUrl': str(item.DetailPageURL),
+                    'imgUrl': str(item.LargeImage.URL),
+                    'price': str(item.OfferSummary.LowestNewPrice.FormattedPrice)})
+        results = { 'results': results }
+    except NoExactMatchesFound, e:
+        results = {'error': "NoExactMatchesFound"}
+
+    return results
+
