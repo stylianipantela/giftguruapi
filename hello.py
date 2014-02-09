@@ -4,7 +4,7 @@ import json
 from flask import Flask, jsonify, abort, make_response
 
 from amazon import run_test
-# from db_model import get_users
+import db_model as db
 
 app = Flask(__name__)
 
@@ -21,6 +21,32 @@ def get_product(keyword, callback):
 	result = callback + '(' + results + ');'
 	return result
 
+@app.route('/get_user/<string:user_email>/<string:callback>', methods = ['GET'])
+def get_user(user_email, callback):
+	if (not user_email) or (not callback):
+		abort(404)
+	user_id = db.login(user_email)
+	result = json.dumps( user_id )
+	result = callback + '(' + result + ');'
+	return result
+
+@app.route('/get_questions/<string:callback>', methods = ['GET'])
+def get_questions(callback):
+	if (not callback):
+		abort(404)
+	questions = db.get_questions()
+	result = json.dumps( questions )
+	result = callback + '(' + result + ');'
+	return result
+
+@app.route('/get_answers/<string:user_id>/<string:callback>', methods = ['GET'])
+def get_answers(user_id, callback):
+	if (not callback):
+		abort(404)
+	answers = db.get_answers(user_id)
+	result = json.dumps( answers )
+	result = callback + '(' + result + ');'
+	return result
 
 # @app.route('/users', methods = ['GET'])
 # def get_users():
