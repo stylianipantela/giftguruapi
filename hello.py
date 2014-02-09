@@ -48,6 +48,17 @@ def get_answers(user_id, callback):
 	result = callback + '(' + result + ');'
 	return result
 
+@app.route('/set_answer/<string:user_id>/<string:question_id>/<string:answer_text>/<string:callback>', methods = ['GET'])
+def set_answer(user_id, question_id, answer_text, callback):
+	if (not callback):
+		abort(404)
+	answers = db.set_answer(user_id, question_id, answer_text)
+	result = json.dumps( answers )
+	result = callback + '(' + result + ');'
+	return result
+
+
+
 # @app.route('/users', methods = ['GET'])
 # def get_users():
 #     return jsonify( { 'results': get_users() })

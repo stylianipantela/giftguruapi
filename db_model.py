@@ -1,11 +1,15 @@
 #!/usr/bin/python
 import MySQLdb
 
-def login(user_email):
+def connect():
 	db = MySQLdb.connect(host="us-cdbr-east-05.cleardb.net", # your host, usually localhost
                      user="b54cb4dd444247", # your username
                       passwd="3e31ed0e", # your password
                       db="heroku_2f2035f7b6d3027") # name of the data base
+	return db
+
+def login(user_email):
+	db = connect()
 	# you must create a Cursor object. It will let
 	#  you execute all the query you need
 	cur = db.cursor() 
@@ -20,14 +24,12 @@ def login(user_email):
 	sql = "INSERT INTO users (email) VALUES (%s)"
 	args= [user_email]
 	cur.execute(sql,args)
+	db.commit()
 	return {'results': cur.lastrowid, 'status' : 0}
 
 
 def get_questions():
-	db = MySQLdb.connect(host="us-cdbr-east-05.cleardb.net", # your host, usually localhost
-                     user="b54cb4dd444247", # your username
-                      passwd="3e31ed0e", # your password
-                      db="heroku_2f2035f7b6d3027") # name of the data base
+	db = connect()
 	# you must create a Cursor object. It will let
 	#  you execute all the query you need
 	cur = db.cursor() 
@@ -42,11 +44,7 @@ def get_questions():
 	return {'results': results, 'status': 0}
 
 def get_answers(user_id):
-	db = MySQLdb.connect(host="us-cdbr-east-05.cleardb.net", # your host, usually localhost
-                     user="b54cb4dd444247", # your username
-                      passwd="3e31ed0e", # your password
-                      db="heroku_2f2035f7b6d3027") # name of the data base
-
+	db = connect()
 	questions = get_questions()
 	questions = questions['results']
 	# you must create a Cursor object. It will let
@@ -67,26 +65,25 @@ def get_answers(user_id):
             'answer_text': row[2]})
 	return {'results': results, 'status': 0}
 
-# def set_answer(user_id, question_id, answer_text):
-# 	db = MySQLdb.connect(host="us-cdbr-east-05.cleardb.net", # your host, usually localhost
-#                      user="b54cb4dd444247", # your username
-#                       passwd="3e31ed0e", # your password
-#                       db="heroku_2f2035f7b6d3027") # name of the data base
-# 	# you must create a Cursor object. It will let
-# 	#  you execute all the query you need
-# 	cur = db.cursor() 
-
-# 	# Use all the SQL you like
-# 	sql = "SELECT * FROM answers WHERE user_id = %s AND question_id = %s AND answer_text = %s"
-# 	args= [user_id, question_id, answer_text]
-# 	cur.execute(sql,args)
-# 	for row in cur.fetchall():
-# 		sql = "INSERT INTO answers (user_id, question_id, answer_text) VALUES (%s)"
-# 		args= [user_email]
-# 		cur.execute(sql,args)
-# 		return {'results': row[0], 'status': 0}
-# 	sql = "INSERT INTO answers (email) VALUES (%s)"
-# 	args= [user_email]
-# 	cur.execute(sql,args)
-# 	return {'results': cur.lastrowid, 'status' : 0}
+def set_answer(user_id, question_id, answer_text):
+	db = connect()
+	# you must create a Cursor object. It will let
+	#  you execute all the query you need
+	cur = db.cursor() 
+	sql = "SELECT * FROM answers WHERE user_id = %s AND question_id = %s"
+	args= [user_id, question_id]
+	cur.execute(sql,args)
+	for row in cur.fetchall():
+		sql = "UPDATE answers SET answer_text = %s WHERE user_id = %s AND question_id = %s"
+		args= [answer_text, user_id, question_id]
+		cur.execute(sql,args)
+		db.commit()
+		return {'status': 2}
+	sql = "INSERT INTO answers (user_id, question_id, answer_text) VALUES (%s, %s, %s)"
+	args= [user_id, question_id, answer_text]
+	cur.execute(sql,args)
+	db.commit()
+	for row in cur.fetchall():
+		return {'results': cur.lastrowid, 'status' : 0}
+	return {'status': 1}
 
