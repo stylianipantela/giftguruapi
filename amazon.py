@@ -62,7 +62,7 @@ def top3(group, keywords, responseGroup):
                (not (hasattr(item.OfferSummary, 'LowestNewPrice'))) or \
                (not (hasattr(item.OfferSummary.LowestNewPrice, 'FormattedPrice'))):
                 continue    
-                
+
             results.append({
                     'title' : str(item.ItemAttributes.Title),
                     'pageUrl': str(item.DetailPageURL),
