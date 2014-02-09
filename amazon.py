@@ -66,6 +66,10 @@ def top3(group, keywords, responseGroup):
                (not (hasattr(item.OfferSummary.LowestNewPrice, 'FormattedPrice'))):
                 continue    
             counter = counter + 1
+            try:
+                str(item.ItemAttributes.Title)
+            except UnicodeEncodeError:
+                continue
             results.append({
                     'title' : str(item.ItemAttributes.Title),
                     'pageUrl': str(item.DetailPageURL),
