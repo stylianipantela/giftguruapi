@@ -77,7 +77,7 @@ def get_questions_without_answer(user_id, callback):
 	if (not callback):
 		abort(404)
 	result = db.get_questions_without_answer(user_id)
-	result = json.dumps( {'results': result, 'status': 0} )
+	result = json.dumps( result )
 	result = callback + '(' + result + ');'
 	return result
 
