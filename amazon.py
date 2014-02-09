@@ -34,7 +34,10 @@ def run_test(group, keywords, responseGroup):
                (not (hasattr(item.OfferSummary, 'LowestNewPrice'))) or \
                (not (hasattr(item.OfferSummary.LowestNewPrice, 'FormattedPrice'))):
                 continue    
-                
+            try:
+                str(item.ItemAttributes.Title)
+            except UnicodeEncodeError:
+                continue
             results.append({
             		'title' : str(item.ItemAttributes.Title),
                     'pageUrl': str(item.DetailPageURL),
