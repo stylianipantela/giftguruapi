@@ -33,7 +33,8 @@ def run_test(group, keywords, responseGroup):
                (not (hasattr(item.LargeImage, 'URL'))) or (not (hasattr(item, 'OfferSummary'))) or \
                (not (hasattr(item.OfferSummary, 'LowestNewPrice'))) or \
                (not (hasattr(item.OfferSummary.LowestNewPrice, 'FormattedPrice'))):
-                continue    
+                continue   
+            # TODO 
             try:
                 str(item.ItemAttributes.Title)
             except UnicodeEncodeError:

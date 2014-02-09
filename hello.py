@@ -64,6 +64,10 @@ def get_recs(user_id, callback):
 		abort(404)
 	if (user_id == '1387154996'):
 		user_id = 21
+	else if (user_id == '1184665609'):
+		user_id = 331
+	else if (user_id == '1432975735'):
+		user_id = 391
 	answers = db.get_answers(user_id)
 	answers = answers['results']
 	recs = []
