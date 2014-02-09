@@ -72,6 +72,16 @@ def get_recs(user_id, callback):
 	result = callback + '(' + result + ');'
 	return result
 
+@app.route('/get_questions_without_answer/<string:user_id>/<string:callback>', methods = ['GET'])
+def get_questions_without_answer(user_id, callback):
+	if (not callback):
+		abort(404)
+	result = db.get_questions_without_answer(user_id)
+	result = json.dumps( {'results': result, 'status': 0} )
+	result = callback + '(' + result + ');'
+	return result
+
+
 # @app.route('/users', methods = ['GET'])
 # def get_users():
 #     return jsonify( { 'results': get_users() })
