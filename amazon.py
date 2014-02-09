@@ -54,7 +54,6 @@ def top3(group, keywords, responseGroup):
         for item in items:     
             if (counter == 3):
                 break
-            counter = counter + 1
         
             if (not (hasattr(item, 'DetailPageURL'))) or (not (hasattr(item, 'ItemAttributes'))) or \
                (not (hasattr(item.ItemAttributes, 'Title'))) or (not (hasattr(item, 'LargeImage'))) or \
@@ -62,7 +61,7 @@ def top3(group, keywords, responseGroup):
                (not (hasattr(item.OfferSummary, 'LowestNewPrice'))) or \
                (not (hasattr(item.OfferSummary.LowestNewPrice, 'FormattedPrice'))):
                 continue    
-
+            counter = counter + 1
             results.append({
                     'title' : str(item.ItemAttributes.Title),
                     'pageUrl': str(item.DetailPageURL),
