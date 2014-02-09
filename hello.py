@@ -66,8 +66,8 @@ def get_recs(user_id, callback):
 	answers = answers['results']
 	recs = []
 	for answer in answers:
-		rec = top3('All', answer['question_text'], 'Images, ItemAttributes, OfferSummary')
-		recs.append({'question_text': answer['question_text'], 'recs': rec['results']})
+		rec = top3('All', answer['answer_text'], 'Images, ItemAttributes, OfferSummary')
+		recs.append({'question_text': answer['answer_text'], 'recs': rec['results']})
 	result = json.dumps( {'results': recs, 'status': 0} )
 	result = callback + '(' + result + ');'
 	return result
