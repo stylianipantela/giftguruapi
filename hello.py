@@ -62,8 +62,8 @@ def set_answer(user_id, question_id, answer_text, callback):
 def get_recs(user_id, callback):
 	if (not callback):
 		abort(404)
-	if (user_id == 1387154996)
-	  user_id = 21
+	if (user_id == 1387154996):
+		user_id = 21
 	answers = db.get_answers(user_id)
 	answers = answers['results']
 	recs = []
