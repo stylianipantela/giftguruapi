@@ -3,10 +3,6 @@ import os
 import json
 from flask import Flask, jsonify, abort, make_response
 
-from amazonproduct import API
-api = API(locale='us', cfg='amazon-product-api.cfg')
-
-
 from amazon import run_test
 # from db_model import get_users
 
@@ -21,7 +17,7 @@ def get_product(keyword, callback):
 	if (not keyword) or (not callback):
 		abort(404)
 	results = run_test('All', keyword, 'Images, ItemAttributes, OfferSummary')
-	results = json.dumps( { 'results': results } )
+	results = json.dumps( results )
 	result = callback + '(' + results + ');'
 	return result
 
