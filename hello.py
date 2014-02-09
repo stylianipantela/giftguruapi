@@ -3,6 +3,10 @@ import os
 import json
 from flask import Flask, jsonify, abort, make_response
 
+from amazonproduct import API
+api = API(locale='us', cfg='amazon-product-api.cfg')
+
+
 from amazon import run_test
 # from db_model import get_users
 
@@ -19,8 +23,8 @@ def get_product(keyword, callback):
 	results = run_test('All', keyword, 'Images, ItemAttributes, OfferSummary')
 	results = json.dumps( { 'results': results } )
 	result = callback + '(' + results + ');'
-	# return make_response(jsonify( { 'result': "Specify input3" } ), 200)
 	return result
+
 
 # @app.route('/users', methods = ['GET'])
 # def get_users():
