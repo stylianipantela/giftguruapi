@@ -57,6 +57,15 @@ def set_answer(user_id, question_id, answer_text, callback):
 	result = callback + '(' + result + ');'
 	return result
 
+@app.route('/delete_answer/<string:user_id>/<string:question_id>/<string:callback>', methods = ['GET'])
+def delete_answer(user_id, question_id, callback):
+	if (not callback):
+		abort(404)
+	response = db.delete_answer(user_id, question_id)
+	result = json.dumps( response )
+	result = callback + '(' + result + ');'
+	return result
+
 
 @app.route('/get_recs/<string:user_id>/<string:callback>', methods = ['GET'])
 def get_recs(user_id, callback):
@@ -74,6 +83,7 @@ def get_recs(user_id, callback):
 	for answer in answers:
 		rec = top3('All', answer['answer_text'], 'Images, ItemAttributes, OfferSummary')
 		recs.append({'question_text': answer['answer_text'], 'recs': rec['results']})
+		break
 	result = json.dumps( {'results': recs, 'status': 0} )
 	result = callback + '(' + result + ');'
 	return result
@@ -86,6 +96,27 @@ def get_questions_without_answer(user_id, callback):
 	result = json.dumps( result )
 	result = callback + '(' + result + ');'
 	return result
+
+from amazonproduct import API
+from amazonproduct import NoExactMatchesFound
+api = API(locale='us', cfg='amazon-product-api.cfg')
+
+@app.route('/get_ids/<string:keyword>', methods = ['GET'])
+def get_ids(keyword):
+	results = []
+	try:
+		items = api.item_search('All', Keywords= keyword, ResponseGroup='Images, ItemAttributes, OfferSummary')
+		for item in items:     
+			if (not (hasattr(item, 'ASIN'))):
+			    continue   
+			results.append({
+            		'source_id' : str(item.ASIN),
+                    'source': 'amazon'})
+		results = { 'results': results }
+	except NoExactMatchesFound, e:
+		results = {'error': "NoExactMatchesFound"}
+	return json.dumps(results);
+
 
 
 # @app.route('/users', methods = ['GET'])

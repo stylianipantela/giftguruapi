@@ -106,3 +106,16 @@ def set_answer(user_id, question_id, answer_text):
 		return {'results': cur.lastrowid, 'status' : 0}
 	return {'status': 1}
 
+def delete_answer(user_id, question_id):
+	db = connect()
+	# you must create a Cursor object. It will let
+	#  you execute all the query you need
+	cur = db.cursor() 
+	sql = "DELETE FROM answers WHERE user_id = %s AND question_id = %s"
+	args= [user_id, question_id]
+	cur.execute(sql,args)
+	db.commit()
+
+	# TODO: check if actually deleted
+	return {'status': 1}
+
