@@ -71,19 +71,12 @@ def delete_answer(user_id, question_id, callback):
 def get_recs(user_id, callback):
 	if (not callback):
 		abort(404)
-	if (user_id == '1387154996'):
-		user_id = 21
-	elif (user_id == '1184665609'):
-		user_id = 331
-	elif (user_id == '1432975735'):
-		user_id = 391
 	answers = db.get_answers(user_id)
 	answers = answers['results']
 	recs = []
 	for answer in answers:
 		rec = top3('All', answer['answer_text'], 'Images, ItemAttributes, OfferSummary')
 		recs.append({'question_text': answer['answer_text'], 'recs': rec['results']})
-		break
 	result = json.dumps( {'results': recs, 'status': 0} )
 	result = callback + '(' + result + ');'
 	return result
