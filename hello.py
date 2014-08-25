@@ -21,11 +21,11 @@ def get_product(keyword, callback):
 	result = callback + '(' + results + ');'
 	return result
 
-@app.route('/get_user/<string:user_email>/<string:callback>', methods = ['GET'])
-def get_user(user_email, callback):
-	if (not user_email) or (not callback):
+@app.route('/get_user/<string:fb_id>/<string:callback>', methods = ['GET'])
+def get_user(fb_id, callback):
+	if (not fb_id) or (not callback):
 		abort(404)
-	user_id = db.login(user_email)
+	user_id = db.login(fb_id)
 	result = json.dumps( user_id )
 	result = callback + '(' + result + ');'
 	return result

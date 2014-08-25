@@ -8,25 +8,41 @@ def connect():
                       db="heroku_2f2035f7b6d3027") # name of the data base
 	return db
 
-def login(user_email):
+def login(fb_id):
 	db = connect()
-	# you must create a Cursor object. It will let
-	#  you execute all the query you need
 	cur = db.cursor() 
 
 	# Use all the SQL you like
-	sql = "SELECT id FROM users WHERE email = %s"
-	args= [user_email]
+	sql = "SELECT id FROM users WHERE fb_id = %s"
+	args = [fb_id]
 	cur.execute(sql,args)
 
 	for row in cur.fetchall():
 		return {'results': row[0], 'status': 0}
-	sql = "INSERT INTO users (email) VALUES (%s)"
-	args= [user_email]
+	sql = "INSERT INTO users (fb_id) VALUES (%s)"
+	args= [fb_id]
 	cur.execute(sql,args)
 	db.commit()
 	return {'results': cur.lastrowid, 'status' : 0}
 
+# def login(user_email):
+# 	db = connect()
+# 	# you must create a Cursor object. It will let
+# 	#  you execute all the query you need
+# 	cur = db.cursor() 
+
+# 	# Use all the SQL you like
+# 	sql = "SELECT id FROM users WHERE email = %s"
+# 	args= [user_email]
+# 	cur.execute(sql,args)
+
+# 	for row in cur.fetchall():
+# 		return {'results': row[0], 'status': 0}
+# 	sql = "INSERT INTO users (email) VALUES (%s)"
+# 	args= [user_email]
+# 	cur.execute(sql,args)
+# 	db.commit()
+# 	return {'results': cur.lastrowid, 'status' : 0}
 
 def get_questions():
 	db = connect()
