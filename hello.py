@@ -66,11 +66,11 @@ def delete_answer(user_id, question_id, callback):
 	result = callback + '(' + result + ');'
 	return result
 
-@app.route('/get_recs/<string:user_id>/<string:callback>', methods = ['GET'])
-def get_recs(user_id, callback):
+@app.route('/get_recs/<string:fb_id>/<string:callback>', methods = ['GET'])
+def get_recs(fb_id, callback):
 	if (not callback):
 		abort(404)
-	answers = db.get_answers(user_id)
+	answers = db.get_answers_fb_id(fb_id)
 	answers = answers['results']
 	recs = []
 	for answer in answers:

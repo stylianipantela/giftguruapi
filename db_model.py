@@ -81,6 +81,25 @@ def get_answers(user_id):
             'answer_text': row[2]})
 	return {'results': results, 'status': 0}
 
+def get_answers_fb_id(fb_id):
+	db = connect()
+	questions = get_questions()
+	questions = questions['results']
+	cur = db.cursor() 
+	sql = "SELECT * FROM answers a INNER JOIN users u ON u.id = a.user_id AND u.fb_id = %s" 
+	args= [fb_id]
+	cur.execute(sql,args)	
+	results = []
+	for row in cur.fetchall():
+		for v in questions:
+		    if v['question_id']==row[1]:
+		         question = v['question_text']
+		results.append({
+			'question_text' : question,
+    		'question_id' : row[1],
+            'answer_text': row[2]})
+	return {'results': results, 'status': 0}
+
 
 def get_questions_without_answer(user_id):
 	db = connect()
